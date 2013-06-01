@@ -9,7 +9,7 @@ class Stenography {
 	public:
 		virtual ~Stenography() {};
 		void embed(ifstream& host, ifstream& secret, ofstream& outfile);
-		virtual deque<char>& extract(deque<char>& host) = 0;
+		void extract(ifstream& host, ofstream& outfile);
 	protected:
 		virtual bool embedable(ifstream& host, ifstream& secret) = 0;
 		virtual void embed(char hide, deque<char>* hostDeque, char* stenographied, u_int& index) = 0;
@@ -20,7 +20,6 @@ class Stenography {
 class Lsb1Stenography : public Stenography {
 	public:
 		~Lsb1Stenography() {};
-		deque<char>& extract(deque<char>& host);
 	protected:
 		bool embedable(ifstream& host, ifstream& secret);
 		void embed(char hide, deque<char>* hostDeque, char* stenographied, u_int& index);

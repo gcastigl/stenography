@@ -17,7 +17,3 @@ void Lsb1Stenography::embed(char hide, deque<char>* hostDeque, char* stenographi
 		index--;
 	}
 }
-
-deque<char>& Lsb1Stenography::extract(deque<char>& host) {
-	return host;
-}

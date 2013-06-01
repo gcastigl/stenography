@@ -38,3 +38,8 @@ void Stenography::embed(ifstream& host, ifstream& secret, ofstream& outfile) {
 	outfile.write(stenographied, totalSize);
 	cout << "stenography saved written successfully" << endl;
 }
+
+void Stenography::extract(ifstream& host, ofstream& outfile) {
+	deque<char>* hostDeque = convertoToDeque(host);
+	// ...
+}
