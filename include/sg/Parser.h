@@ -30,20 +30,17 @@ typedef struct Command {
 
 	// Archivo a esconder (solo para embed action)
 	// deque<char>* inputFileDeque;
-	ifstream* inputFile;
+	string inputFile;
 
 	// Archivo de salida
-	ofstream* outputFile;
+	string outputFile;
 
 	// Archivo portador de la imagen
 	// deque<char>* hostFileDeque;
-	ifstream* hostFile;
+	string hostFile;
 } Command;
 
 class Parser {
 	public:
 		Command* parseCommand(int argc, char *argv[]);
-	private:
-		// deque<char>* loadFileToDeque(string path);
-		ifstream* loadFile(string path);
 };

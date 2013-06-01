@@ -9,7 +9,7 @@ LsbStenography::LsbStenography(int bits) :
 		bits(bits) {
 }
 
-bool LsbStenography::embedable(ifstream& host, ifstream& secret) {
+bool LsbStenography::embedable(vector<char>& host, vector<char>& secret) {
 	// Check that secret can be embeddable inside host
 	return true;
 }
