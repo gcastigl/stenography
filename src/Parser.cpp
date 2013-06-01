@@ -17,7 +17,8 @@ Command* Parser::parseCommand(int argc, char *argv[]) {
 	cmd->password = NULL;
 	cmd->inputFile = loadFile("./res/secret.txt");
 	cmd->hostFile = loadFile("./res/original.bmp");
-	cmd->outputFilePath = "./res/troyanHorse.bmp";
+	// cmd->outputFilePath = "./res/troyanHorse.bmp";
+	cmd->outputFile = new ofstream("./res/troyanHorse.bmp", std::ofstream::binary);
 	return cmd;
 }
 

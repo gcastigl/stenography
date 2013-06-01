@@ -33,7 +33,7 @@ typedef struct Command {
 	ifstream* inputFile;
 
 	// Archivo de salida
-	string outputFilePath;
+	ofstream* outputFile;
 
 	// Archivo portador de la imagen
 	// deque<char>* hostFileDeque;

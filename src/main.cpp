@@ -32,14 +32,15 @@ int main (int argc, char *argv[]) {
 	 
 	//Steanography execution
 	if (command.action == EMBED) {
-		stenography->embed(*command.hostFile, *command.inputFile);
+		stenography->embed(*command.hostFile, *command.inputFile, *command.outputFile);
 	} else {
 	//	ans = stenography->extract(vec);
 	}
-	
 	//decrypt the file if needed
 	
 	//Save ans in file
+	command.outputFile->close();
+	cout << "Program succesfully finished" << endl;
 	return 0;
 }
 
