@@ -7,6 +7,7 @@
 using namespace std;
 
 int main (int argc, char *argv[]) {
+	printf("Sistema de encriptacion por estenografia v1.0");
 	Parser* parser = new Parser();
 	Command* command = parser->parseCommand(argc, argv);
 	if (command == NULL) {
@@ -31,7 +32,7 @@ int main (int argc, char *argv[]) {
 	 
 	//Steanography execution
 	if (command->action == EMBED) {
-//		ans = stenography->embed(vec, vec);
+		// stenography->embed(command->hostFileDeque, command->inputFileDeque);
 	} else {
 	//	ans = stenography->extract(vec);
 	}

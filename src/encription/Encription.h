@@ -3,8 +3,8 @@
 
 class EncriptionStrategy {
 	public:
-		virtual void encript();
-		virtual void decript();
+		virtual void encript() = 0;
+		virtual void decript() = 0;
 };
 
 class Aes128EncriptionStrategy : public EncriptionStrategy {

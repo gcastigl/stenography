@@ -17,3 +17,7 @@
 *.app
 
 bin/*
+.cproject
+.project
+Debug/
+src2/
