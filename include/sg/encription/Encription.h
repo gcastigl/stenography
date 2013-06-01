@@ -1,14 +1,15 @@
-#ifndef ENCRIPTION_H_
-#define ENCRIPTION_H_
+#pragma once
 
 class EncriptionStrategy {
 	public:
+		virtual ~EncriptionStrategy() {};
 		virtual void encript() = 0;
 		virtual void decript() = 0;
 };
 
 class Aes128EncriptionStrategy : public EncriptionStrategy {
 	public:
+		~Aes128EncriptionStrategy() {};
 		void encript();
 		void decript();
 };
@@ -32,4 +33,3 @@ class PezEncriptionStrategy : public EncriptionStrategy {
 		void decript();
 };
 */
-#endif

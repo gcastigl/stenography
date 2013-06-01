@@ -1,8 +1,5 @@
-#ifndef PARSE_H_
-#define PARSE_H_
+#pragma once
 
-#include "stenography/Stenography.h"
-#include "action.h"
 #include <string>
 
 using namespace std;
@@ -30,19 +27,23 @@ typedef struct Command {
 	EncriptionBlockType encriptionBlock;
 	string* errorMsg;
 	string* password;
+
 	// Archivo a esconder (solo para embed action)
-	deque<char>* inputFileDeque;
+	// deque<char>* inputFileDeque;
+	ifstream* inputFile;
+
 	// Archivo de salida
 	string outputFilePath;
+
 	// Archivo portador de la imagen
-	deque<char>* hostFileDeque;
+	// deque<char>* hostFileDeque;
+	ifstream* hostFile;
 } Command;
 
 class Parser {
 	public:
 		Command* parseCommand(int argc, char *argv[]);
 	private:
-		deque<char>* loadFileToDeque(string path);
+		// deque<char>* loadFileToDeque(string path);
+		ifstream* loadFile(string path);
 };
-
-#endif
