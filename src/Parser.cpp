@@ -11,7 +11,7 @@ using namespace std;
 Command* Parser::parseCommand(int argc, char *argv[]) {
 	Command* cmd = new Command;
 	cmd->action = EMBED;
-	cmd->stenography = LSB1;
+	cmd->stenography = LSB4;
 	cmd->encription = AES128;
 	cmd->encriptionBlock = ECB;
 	cmd->password = NULL;

@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <deque>
+#include <vector>
 
 using namespace std;
 
@@ -12,15 +13,18 @@ class Stenography {
 		void extract(ifstream& host, ofstream& outfile);
 	protected:
 		virtual bool embedable(ifstream& host, ifstream& secret) = 0;
-		virtual void embed(char hide, deque<char>* hostDeque, char* stenographied, u_int& index) = 0;
+		virtual void embed(char hide, vector<char>& hostArray, u_int& index) = 0;
 	private:
-		deque<char>* convertoToDeque(ifstream& file);
+		vector<char>& convertToArray(ifstream& file);
 };
 
-class Lsb1Stenography : public Stenography {
+class LsbStenography : public Stenography {
 	public:
-		~Lsb1Stenography() {};
+		LsbStenography(int bits);
+		~LsbStenography() {};
 	protected:
 		bool embedable(ifstream& host, ifstream& secret);
-		void embed(char hide, deque<char>* hostDeque, char* stenographied, u_int& index);
+		void embed(char hide, vector<char>& hostArray, u_int& index);
+	private:
+		int bits;
 };

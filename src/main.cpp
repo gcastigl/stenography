@@ -18,9 +18,10 @@ int main (int argc, char *argv[]) {
 	Stenography* stenography;
 	switch (command.stenography) {
 		case LSB1:
-			stenography = new Lsb1Stenography();
+			stenography = new LsbStenography(1);
 			break;
 		case LSB4:
+			stenography = new LsbStenography(4);
 			break;
 		case LSBE:
 			break;
