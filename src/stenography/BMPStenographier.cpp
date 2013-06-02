@@ -35,24 +35,31 @@ void BMPStenographier::embed(string host, string secret, string output,
 void BMPStenographier::extract(string host, string output,
 		Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
 	ifstream& hostFile = *loadFile(host);
-	ofstream& outputFile = *(new ofstream(output, ios::binary));
 	hostFile.seekg(HEADER_SIZE);
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
 	int size;
 	popElement(outputDeque, &size, sizeof(size));
 	//Write file to stream
 	cout << "Recuperando " << size << " bytes" << endl;
+	deque<char>& outputVector = *(new deque<char>());
 	for (int i = 0; i < size; i++) {
-		cout << outputDeque.front() << endl;
-		outputFile << outputDeque.front();
+		outputVector.push_back(outputDeque.front());
 		outputDeque.pop_front();
 	}
 	string ext;
 	//Retrieve file extension
-	//for (char c = outputDeque.front(); c != '\0'; outputDeque.pop_front()) {
-	//	ext.push_back(c);
-	//}
-
+	char c;
+	while ((c = outputDeque.front()) != '\0') {
+		ext.push_back(c);
+		outputDeque.pop_front();
+	}
+	ofstream& outputFile = *(new ofstream(output + ext, ios::binary));
+	cout << output + ext << endl;
+	cout << outputVector.size() << endl;
+	while (!outputVector.empty()) {
+		outputFile << outputVector.front();
+		outputVector.pop_front();
+	}
 	hostFile.close();
 	outputFile.close();
 }
@@ -67,7 +74,7 @@ void BMPStenographier::pushElement(vector<char>& vector, type num) {
 
 void BMPStenographier::popElement(deque<char>& deque, int* num, size_t bytes) {
 	*num = 0;
-	for (size_t i = 0; i < bytes ; i++) {
+	for (size_t i = 0; i < bytes; i++) {
 		char c = deque.front();
 		*num <<= 8;
 		*num += c;
