@@ -28,12 +28,12 @@ int main (int argc, char *argv[]) {
 			break;
 	}
 	
-	BMPStenographier stenographier;
+	BMPStenographier stenographer;
 	//Steanography execution
 	if (command.action == EMBED) {
-		stenographier.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, nullptr);
+		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, nullptr);
 	} else {
-	//	ans = stenography->extract(vec);
+		stenographer.extract(command.hostFile, command.outputFile, *stenography, nullptr);
 	}
 	
 	cout << "Program succesfully finished" << endl;

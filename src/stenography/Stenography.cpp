@@ -20,8 +20,3 @@ void Stenography::embed(vector<char>& host, vector<char>& secret, ofstream& outf
 	outfile.write(host.data(), host.size());
 	cout << "stenography saved written successfully" << endl;
 }
-
-void Stenography::extract(ifstream& host, ofstream& outfile) {
-	//deque<char>* hostDeque = convertoToDeque(host);
-	// ...
-}
