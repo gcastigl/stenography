@@ -1,17 +1,22 @@
 #pragma once
+#include <vector>
 
-class EncriptionStrategy {
+using namespace std;
+
+enum EncryptionMode {CBC, OFB, CFB, ECB};
+
+class EncryptionStrategy {
 	public:
-		virtual ~EncriptionStrategy() {};
-		virtual void encript() = 0;
-		virtual void decript() = 0;
+		virtual ~EncryptionStrategy() {};
+		virtual vector<char>& encript(EncryptionMode mode, unsigned char * password, vector<char>& input) = 0;
+		virtual vector<char>& decript(EncryptionMode mode, unsigned char * password, vector<char>& input) = 0;
 };
 
-class Aes128EncriptionStrategy : public EncriptionStrategy {
+class Aes128EncriptionStrategy : public EncryptionStrategy {
 	public:
 		~Aes128EncriptionStrategy() {};
-		void encript();
-		void decript();
+		vector<char>& encript(EncryptionMode mode, unsigned char * password, vector<char>& input);
+		vector<char>& decript(EncryptionMode mode, unsigned char * password, vector<char>& input);
 };
 
 /*
