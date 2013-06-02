@@ -1,18 +1,18 @@
 #pragma once
 
 #include <fstream>
-#include <deque>
 #include <vector>
+#include <deque>
 
 using namespace std;
 
 class Stenography {
 	public:
 		virtual ~Stenography() {};
-		void embed(ifstream& host, ifstream& secret, ofstream& outfile);
-		void extract(ifstream& host, ofstream& outfile);
+		void embed(vector<char>& host, vector<char>& secret, ofstream& outfile);
+		virtual deque<char>& extract(vector<char>& host) =0;
 	protected:
-		virtual bool embedable(ifstream& host, ifstream& secret) = 0;
+		virtual bool embedable(vector<char>& host, vector<char>& secret) = 0;
 		virtual void embed(char hide, vector<char>& hostArray, u_int& index) = 0;
 	private:
 		vector<char>& convertToArray(ifstream& file);
@@ -22,8 +22,9 @@ class LsbStenography : public Stenography {
 	public:
 		LsbStenography(int bits);
 		~LsbStenography() {};
+		deque<char>& extract(vector<char>& host);
 	protected:
-		bool embedable(ifstream& host, ifstream& secret);
+		bool embedable(vector<char>& host, vector<char>& secret);
 		void embed(char hide, vector<char>& hostArray, u_int& index);
 	private:
 		int bits;

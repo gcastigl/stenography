@@ -3,6 +3,7 @@
 #include <deque>
 #include <sg/Parser.h>
 #include <sg/stenography/Stenography.h>
+#include <sg/stenography/BMPStenographier.h>
 
 using namespace std;
 
@@ -27,20 +28,14 @@ int main (int argc, char *argv[]) {
 			break;
 	}
 	
-	// Encript the file if needed
-	
-	// make a vec to stenograph (the image without the first 54bytes)
-	 
+	BMPStenographier stenographer;
 	//Steanography execution
 	if (command.action == EMBED) {
-		stenography->embed(*command.hostFile, *command.inputFile, *command.outputFile);
+		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, nullptr);
 	} else {
-	//	ans = stenography->extract(vec);
+		stenographer.extract(command.hostFile, command.outputFile, *stenography, nullptr);
 	}
-	//decrypt the file if needed
 	
-	//Save ans in file
-	command.outputFile->close();
 	cout << "Program succesfully finished" << endl;
 	return 0;
 }
