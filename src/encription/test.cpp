@@ -12,7 +12,7 @@ void printVec(vector<char>& vec);
 
 int main_() {
 	Aes128EncriptionStrategy* e = new Aes128EncriptionStrategy();
-	char * data = "Secret";
+	char * data = "01234567893456";
 	vector<char>* in = new vector<char>();
 	for(int i = 0; i < strlen(data); i++){
 		in->push_back((char)(data[i]));
