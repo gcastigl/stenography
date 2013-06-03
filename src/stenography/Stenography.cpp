@@ -10,9 +10,9 @@ void Stenography::embed(vector<char>& host, vector<char>& secret, ofstream& outf
 	if (!embedable(host, secret)) {
 		throw new IllegalArgumentException("secret does not fit into host!!");
 	}
-	u_int index = 0;
+	size_t index = 0;
 	cout << "Embedding bytes from secret to host" << endl;
-	for (u_int i = 0; i < secret.size(); i++) {
+	for (size_t i = 0; i < secret.size(); i++) {
 		char hide = secret.at(i);
 		embed(hide, host, index);
 	}

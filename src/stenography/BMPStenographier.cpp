@@ -77,8 +77,10 @@ void BMPStenographier::popElement(deque<char>& deque, int* num, size_t bytes) {
 	for (size_t i = 0; i < bytes; i++) {
 		char c = deque.front();
 		*num <<= 8;
-		*num += c;
-		cout << deque.front() << endl;
+		*num |= (0x0FF & c);
+		int intValue = 0;
+		intValue += (unsigned char) c;
+		cout << intValue << endl;
 		deque.pop_front();
 	}
 }

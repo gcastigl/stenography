@@ -14,7 +14,7 @@ bool LsbStenography::embedable(vector<char>& host, vector<char>& secret) {
 	return true;
 }
 
-void LsbStenography::embed(char hide, vector<char>& hostArray, u_int& index) {
+void LsbStenography::embed(char hide, vector<char>& hostArray, size_t& index) {
 	char lowerMask = 0xFF << bits;
 	char upperMask = ~lowerMask;
 	for (unsigned int bit = 0; bit < 8; bit += bits) {
@@ -33,7 +33,6 @@ deque<char>& LsbStenography::extract(vector<char>& host) {
 	cout << "Parseando " << host.size() << " bytes" << endl;
 	for (size_t i = 0 ; i < host.size() ; i++, c <<= bits) {
 		int offset = i % (8 / bits);
-		char hostati = host.at(i);
 		char current = host.at(i) & upperMask;
 		c |= current;
 		if (offset == 7) {
