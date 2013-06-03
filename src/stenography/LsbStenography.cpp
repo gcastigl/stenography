@@ -30,12 +30,13 @@ deque<char>& LsbStenography::extract(vector<char>& host) {
 	char upperMask = ~lowerMask;
 	deque<char>& output = *(new deque<char>());
 	char c = 0;
+	int halfBits = (8 / bits);
 	cout << "Parseando " << host.size() << " bytes" << endl;
 	for (size_t i = 0 ; i < host.size() ; i++, c <<= bits) {
-		int offset = i % (8 / bits);
+		int offset = i % halfBits;
 		char current = host.at(i) & upperMask;
 		c |= current;
-		if (offset == 7) {
+		if (offset == halfBits - 1) {
 			output.push_back(c);
 			c = 0;
 		}
