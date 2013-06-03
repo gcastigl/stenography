@@ -18,10 +18,12 @@ int main_() {
 		in->push_back((char)(data[i]));
 	}
 	printVec(*in);
-	vector<char> out = e->encript(CBC, (unsigned char *)"0123456789123456", *in);
+	vector<char> out = e->encript(CBC, (unsigned char *)"myPassword", *in);
 	printVec(out);
-	vector<char> decripted = e->decript(CBC, (unsigned char *)"0123456789123456", out);
+	fflush(stdout);
+	vector<char> decripted = e->decript(CBC, (unsigned char *)"myPassword", out);
 	printVec(decripted);
+	fflush(stdout);
 }
 
 void printVec(vector<char>& vec){
