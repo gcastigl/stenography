@@ -14,6 +14,7 @@ class Stenography {
 	protected:
 		virtual bool embedable(vector<char>& host, vector<char>& secret) = 0;
 		virtual void embed(char hide, vector<char>& hostArray, size_t& index) = 0;
+		char embedByte(char hide, char embedTo, int bit, int bitsToEmbed);
 	private:
 		vector<char>& convertToArray(ifstream& file);
 };
@@ -29,3 +30,17 @@ class LsbStenography : public Stenography {
 	private:
 		int bits;
 };
+
+class LsbEStenography : public Stenography {
+	public:
+		LsbEStenography() {};
+		~LsbEStenography() {};
+		deque<char>& extract(vector<char>& host);
+	protected:
+		bool embedable(vector<char>& host, vector<char>& secret);
+		void embed(char hide, vector<char>& hostArray, size_t& index);
+	private:
+		static const char c1 = 0x0FE;
+		static const char c2 = 0x0FF;
+};
+

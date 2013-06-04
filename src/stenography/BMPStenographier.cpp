@@ -54,8 +54,6 @@ void BMPStenographier::extract(string host, string output,
 		outputDeque.pop_front();
 	}
 	ofstream& outputFile = *(new ofstream(output + ext, ios::binary));
-	cout << output + ext << endl;
-	cout << outputVector.size() << endl;
 	while (!outputVector.empty()) {
 		outputFile << outputVector.front();
 		outputVector.pop_front();
@@ -78,9 +76,6 @@ void BMPStenographier::popElement(deque<char>& deque, int* num, size_t bytes) {
 		char c = deque.front();
 		*num <<= 8;
 		*num |= (0x0FF & c);
-		int intValue = 0;
-		intValue += (unsigned char) c;
-		cout << intValue << endl;
 		deque.pop_front();
 	}
 }
@@ -94,7 +89,6 @@ vector<char>& BMPStenographier::prepareVector(vector<char>& secretData,
 	//Pusheo el archivo
 	cout << "Leyendo " << secretData.size() << " bytes de archivo" << endl;
 	for (size_t i = 0; i < secretData.size(); i++) {
-		cout << "Pusheo " << secretData.at(i) << endl;
 		secretVector.push_back(secretData.at(i));
 	}
 	string ext = secret.substr(secret.find_last_of('.'));

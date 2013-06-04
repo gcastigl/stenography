@@ -6,21 +6,16 @@
 using namespace std;
 
 LsbStenography::LsbStenography(int bits) :
-		bits(bits) {
+	bits(bits) {
 }
 
 bool LsbStenography::embedable(vector<char>& host, vector<char>& secret) {
-	// Check that secret can be embeddable inside host
-	return true;
+	return secret.size() * 8 / bits <= host.size();
 }
 
 void LsbStenography::embed(char hide, vector<char>& hostArray, size_t& index) {
-	char lowerMask = 0xFF << bits;
-	char upperMask = ~lowerMask;
 	for (unsigned int bit = 0; bit < 8; bit += bits) {
-		char value = (hide >> (8 - bit - 1)) & upperMask;
-		char originalValue = hostArray.at(index);
-		hostArray.at(index) = (originalValue & lowerMask) + value;
+		hostArray.at(index) = embedByte(hide, hostArray.at(index), bit, bits);
 		index++;
 	}
 }
