@@ -9,8 +9,8 @@ Command* Parser::parseCommand(int argc, char *argv[]) {
 	cmd->action = EXTRACT;
 	cmd->stenography = LSB1;
 	cmd->encription = AES128;
-	cmd->encriptionBlock = ECB;
-	cmd->password = NULL;
+	cmd->encriptionBlock = CBC;
+	cmd->password = "jorgeMataNinios";
 	cmd->inputFile = "./res/secret.txt";
 	cmd->hostFile = "./res/troyanHorse.bmp";
 	cmd->outputFile = "./res/recovered";

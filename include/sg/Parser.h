@@ -26,7 +26,7 @@ typedef struct Command {
 	EncriptionType encription;
 	EncriptionBlockType encriptionBlock;
 	string* errorMsg;
-	string* password;
+	const char * password;
 
 	// Archivo a esconder (solo para embed action)
 	// deque<char>* inputFileDeque;
