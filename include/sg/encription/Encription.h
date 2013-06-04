@@ -1,22 +1,33 @@
 #pragma once
 #include <vector>
+#include <sg/Parser.h>
 
 using namespace std;
 
-enum EncryptionMode {CBC, OFB, CFB, ECB};
+#define TAM_CLAVE 16
 
 class EncryptionStrategy {
 	public:
+		EncryptionStrategy(const char * password) :
+			password(password) {
+		};
 		virtual ~EncryptionStrategy() {};
-		virtual vector<char>& encript(EncryptionMode mode, const unsigned char * password, vector<char>& input) = 0;
-		virtual vector<char>& decript(EncryptionMode mode, unsigned char * password, vector<char>& input) = 0;
+		virtual vector<char>& encript(EncriptionBlockType mode, vector<char>& input) = 0;
+		virtual vector<char>& decript(EncriptionBlockType mode, vector<char>& input) = 0;
+	protected :
+		const char * getPassword() const {
+			return password;
+		}
+	private:
+		const char * password;
 };
 
 class Aes128EncriptionStrategy : public EncryptionStrategy {
 	public:
+		Aes128EncriptionStrategy(const char * password) : EncryptionStrategy(password){}
 		~Aes128EncriptionStrategy() {};
-		vector<char>& encript(EncryptionMode mode, const unsigned char * password, vector<char>& input);
-		vector<char>& decript(EncryptionMode mode, unsigned char * password, vector<char>& input);
+		vector<char>& encript(EncriptionBlockType mode, vector<char>& input);
+		vector<char>& decript(EncriptionBlockType mode, vector<char>& input);
 };
 
 /*

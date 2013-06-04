@@ -49,4 +49,14 @@ int EncriptionUtils::encrypt(unsigned char *in, int inl, unsigned char * out,
 	return 1;
 }
 
+unsigned char * EncriptionUtils::unpadding(char *in, int *inl){
+	int pad;
+	int i;
+	unsigned char *unPad;
+	int unPadl = *inl - in[((*inl)-1)] * sizeof(char);
+	unPad = (unsigned char *) malloc(unPadl);
+	memcpy(unPad, in, unPadl);
+	*inl = unPadl;
+	return unPad;
+}
 

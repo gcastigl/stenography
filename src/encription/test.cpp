@@ -11,17 +11,17 @@
 void printVec(vector<char>& vec);
 
 int main_() {
-	Aes128EncriptionStrategy* e = new Aes128EncriptionStrategy();
-	char * data = "Secret";
+	Aes128EncriptionStrategy* e = new Aes128EncriptionStrategy((const char *)"myPassword");
+	char * data = "01234567893456";
 	vector<char>* in = new vector<char>();
 	for(int i = 0; i < strlen(data); i++){
 		in->push_back((char)(data[i]));
 	}
 	printVec(*in);
-	vector<char> out = e->encript(CBC, (unsigned char *)"myPassword", *in);
+	vector<char> out = e->encript(CBC, *in);
 	printVec(out);
 	fflush(stdout);
-	vector<char> decripted = e->decript(CBC, (unsigned char *)"myPassword", out);
+	vector<char> decripted = e->decript(CBC, out);
 	printVec(decripted);
 	fflush(stdout);
 }
