@@ -9,7 +9,6 @@ using namespace std;
 void Stenography::embed(vector<char>& host, vector<char>& secret,
 		ofstream& outfile) {
 	if (!embedable(host, secret)) {
-		cout << "Se pudrio el rancho" << endl;
 		throw new IllegalArgumentException("secret does not fit into host!!");
 	}
 	size_t index = 0;

@@ -26,12 +26,13 @@ int main (int argc, char *argv[]) {
 			stenography = new LsbStenography(4);
 			break;
 		case LSBE:
+			stenography = new LsbEStenography();
 			break;
 	}
 	EncriptionStrategy* encription;
 	switch(command.encription){
 		case AES128:
-			encription = (EncriptionStrategy*) new Aes128EncriptionStrategy(command.password);
+			//encription = (EncriptionStrategy*) new Aes128EncriptionStrategy(command.password);
 			break;
 		case AES192:
 			//encription = new Aes192EncriptionStrategy();
