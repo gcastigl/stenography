@@ -1,9 +1,3 @@
-/*
- * test.cpp
- *
- *  Created on: Jun 1, 2013
- *      Author: gcastigl
- */
 #include <sg/encription/Encription.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,7 +5,7 @@
 void printVec(vector<char>& vec);
 
 int main_() {
-	Aes128EncriptionStrategy* e = new Aes128EncriptionStrategy((const char *)"myPassword");
+	Aes128EncriptionStrategy* e = new Aes128EncriptionStrategy((const char *)"MYPASS");
 	char * data = "0123456789345645464654646465";
 	vector<char>* in = new vector<char>();
 	for(int i = 0; i < strlen(data); i++){
