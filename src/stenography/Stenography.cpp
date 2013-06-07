@@ -9,7 +9,7 @@ using namespace std;
 void Stenography::embed(vector<char>& host, vector<char>& secret,
 		ofstream& outfile) {
 	if (!embedable(host, secret)) {
-		throw new IllegalArgumentException("secret does not fit into host!!");
+		//throw new IllegalArgumentException("secret does not fit into host!!");
 	}
 	size_t index = 0;
 	cout << "Embedding bytes from secret to host" << endl;

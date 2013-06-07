@@ -32,16 +32,16 @@ int main (int argc, char *argv[]) {
 	EncriptionStrategy* encription;
 	switch(command.encription){
 		case AES128:
-			//encription = (EncriptionStrategy*) new Aes128EncriptionStrategy(command.password);
+			encription = (EncriptionStrategy*) new Aes128EncriptionStrategy(command.password);
 			break;
 		case AES192:
-			//encription = new Aes192EncriptionStrategy();
+			encription = (EncriptionStrategy*) new Aes192EncriptionStrategy(command.password);
 			break;
 		case AES256:
-			//encription = new Aes256EncriptionStrategy();
+			encription = (EncriptionStrategy*) new Aes256EncriptionStrategy(command.password);
 			break;
 		case DES:
-			//encription = new DesEncriptionStrategy();
+			encription = (EncriptionStrategy*) new DesEncriptionStrategy(command.password);
 			break;
 	}
 
@@ -50,7 +50,7 @@ int main (int argc, char *argv[]) {
 	if (command.action == EMBED) {
 		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, encription);
 	} else {
-		stenographer.extract(command.hostFile, command.outputFile, *stenography, nullptr);
+		stenographer.extract(command.hostFile, command.outputFile, *stenography, encription);
 	}
 	
 	cout << "Program succesfully finished" << endl;
