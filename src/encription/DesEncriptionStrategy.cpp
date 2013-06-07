@@ -1,4 +1,4 @@
-#include <sg/encription/Encription.h>
+#include <sg/encription/EncriptionStrategy.h>
 #include <openssl/evp.h>
 #include <cstring>
 #include <stdio.h>

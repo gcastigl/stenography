@@ -1,6 +1,6 @@
 #include <sg/stenography/BMPStenographier.h>
 #include <sg/stenography/Stenography.h>
-#include <sg/encription/Encription.h>
+#include <sg/encription/EncriptionStrategy.h>
 
 #include <string>
 #include <iostream>
@@ -12,7 +12,7 @@
 using namespace std;
 
 void BMPStenographier::embed(string host, string secret, string output,
-		Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
+		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
 	ifstream& hostFile = *loadFile(host);
 	ifstream& secretFile = *loadFile(secret);
 	char* headerBuffer = new char[HEADER_SIZE];
@@ -22,10 +22,11 @@ void BMPStenographier::embed(string host, string secret, string output,
 	vector<char> secretData = convertToArray(secretFile);
 	vector<char>* secretVector = &prepareVector(secretData, secret);
 
-	if (!encriptionStrategy) {
-		//secretVector = encryptionStrategy.encrypt(*secretVector);
-		//pushElement(*secretVector, secretVector.size());
+	if (encriptionStrategy != NULL) {
+		*secretVector = encriptionStrategy->encript(mode, *secretVector);
+		pushElement(*secretVector, secretVector->size());
 	}
+
 	stenographer.embed(convertToArray(hostFile), *secretVector, outputFile);
 	hostFile.close();
 	secretFile.close();
@@ -33,7 +34,7 @@ void BMPStenographier::embed(string host, string secret, string output,
 }
 
 void BMPStenographier::extract(string host, string output,
-		Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
+		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
 	ifstream& hostFile = *loadFile(host);
 	hostFile.seekg(HEADER_SIZE);
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));

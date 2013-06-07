@@ -3,7 +3,7 @@
 #include <deque>
 #include <sg/Parser.h>
 #include <sg/stenography/Stenography.h>
-#include <sg/encription/Encription.h>
+#include <sg/encription/EncriptionStrategy.h>
 #include <sg/stenography/BMPStenographier.h>
 
 using namespace std;
@@ -29,28 +29,28 @@ int main (int argc, char *argv[]) {
 			stenography = new LsbEStenography();
 			break;
 	}
-	EncriptionStrategy* encription;
+	ICrypto* encription;
 	switch(command.encription){
 		case AES128:
-			encription = (EncriptionStrategy*) new Aes128EncriptionStrategy(command.password);
+			encription = new Aes128EncriptionStrategy(command.password);
 			break;
 		case AES192:
-			encription = (EncriptionStrategy*) new Aes192EncriptionStrategy(command.password);
+			encription = new Aes192EncriptionStrategy(command.password);
 			break;
 		case AES256:
-			encription = (EncriptionStrategy*) new Aes256EncriptionStrategy(command.password);
+			encription = new Aes256EncriptionStrategy(command.password);
 			break;
 		case DES:
-			encription = (EncriptionStrategy*) new DesEncriptionStrategy(command.password);
+			encription = new DesEncriptionStrategy(command.password);
 			break;
 	}
 
 	BMPStenographier stenographer;
 	//Steanography execution
 	if (command.action == EMBED) {
-		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, encription);
+		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, encription, command.encriptionBlock);
 	} else {
-		stenographer.extract(command.hostFile, command.outputFile, *stenography, encription);
+		stenographer.extract(command.hostFile, command.outputFile, *stenography, encription, command.encriptionBlock);
 	}
 	
 	cout << "Program succesfully finished" << endl;
