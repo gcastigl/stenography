@@ -11,6 +11,8 @@
 
 using namespace std;
 
+
+// EL EMBED NO RECIBE INFORMACION SOBRE EL TIPO DE BLOQUE
 void BMPStenographier::embed(string host, string secret, string output,
 		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
 	ifstream& hostFile = *loadFile(host);
@@ -33,6 +35,8 @@ void BMPStenographier::embed(string host, string secret, string output,
 	outputFile.close();
 }
 
+
+// EL EXTRACT NO RECIBE INFORMACION SOBRE EL TIPO DE BLOQUE
 void BMPStenographier::extract(string host, string output,
 		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
 	ifstream& hostFile = *loadFile(host);
@@ -40,6 +44,10 @@ void BMPStenographier::extract(string host, string output,
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
 	int size;
 	popElement(outputDeque, &size, sizeof(size));
+	//ACA SE TIENE LA PARTE ENCRIPTADA EN OUTPUTDEQUE
+	//HAY QUE DESENCRIPTARLO
+	//SE OBTENDRIA SIZE || BODY || EXT
+	//LEER SIZE DE NUEVO CON POPELEMENT
 	//Write file to stream
 	cout << "Recuperando " << size << " bytes" << endl;
 	deque<char>& outputVector = *(new deque<char>());
@@ -47,6 +55,8 @@ void BMPStenographier::extract(string host, string output,
 		outputVector.push_back(outputDeque.front());
 		outputDeque.pop_front();
 	}
+	
+	
 	string ext;
 	//Retrieve file extension
 	char c;
