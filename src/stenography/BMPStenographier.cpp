@@ -22,10 +22,15 @@ void BMPStenographier::embed(string host, string secret, string output,
 	ofstream& outputFile = *(new ofstream(output, ios::binary));
 	outputFile.write(headerBuffer, HEADER_SIZE);
 	vector<char> secretData = convertToArray(secretFile);
+	
 	vector<char>* secretVector = &prepareVector(secretData, secret);
 
 	if (encriptionStrategy != NULL) {
 		*secretVector = encriptionStrategy->encript(mode, *secretVector);
+		//PUSH ELEMENT PUSHEA AL FINAL DEL VECTOR.
+		//QUEDARIA (SIZE | BODY | EXT) | SIZE Y TIENE QUE QUEDAR SIZE | (SIZE | BODY | EXT)
+		//QUIZAS SE PODRIA USAR UN DEQUE, PERO PARA NO CAMBIAR TODO SIMPLEMENTE SE PUEDE
+		//CREAR UN VECTOR NUEVO PONIENDO EL SIZE Y LUEGO EL RESTO
 		pushElement(*secretVector, secretVector->size());
 	}
 
