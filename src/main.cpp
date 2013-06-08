@@ -43,6 +43,8 @@ int main (int argc, char *argv[]) {
 		case DES:
 			encription = new DesEncriptionStrategy(command.password);
 			break;
+		case NONE: otherwise:
+			encription = NULL;
 	}
 
 	BMPStenographier stenographer;

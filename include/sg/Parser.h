@@ -13,7 +13,7 @@ typedef enum {
 } StenographyType;
 
 typedef enum {
-	AES128, AES192, AES256, DES
+	AES128, AES192, AES256, DES, NONE
 } EncriptionType;
 
 typedef enum {

@@ -13,7 +13,7 @@ Command* Parser::parseCommand(int argc, char *argv[]) {
 	cmd->password = "jorgeMataNinios";
 	cmd->inputFile = "./res/secret.txt";
 	cmd->hostFile = "./res/troyanHorse.bmp";
-	cmd->outputFile = "./res/recovered";
+	cmd->outputFile = "./res/result";
 	return cmd;
 }
 

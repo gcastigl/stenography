@@ -11,8 +11,6 @@
 
 using namespace std;
 
-
-// EL EMBED NO RECIBE INFORMACION SOBRE EL TIPO DE BLOQUE
 void BMPStenographier::embed(string host, string secret, string output,
 		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
 	ifstream& hostFile = *loadFile(host);
@@ -26,12 +24,15 @@ void BMPStenographier::embed(string host, string secret, string output,
 	vector<char>* secretVector = &prepareVector(secretData, secret);
 
 	if (encriptionStrategy != NULL) {
-		*secretVector = encriptionStrategy->encript(mode, *secretVector);
-		//PUSH ELEMENT PUSHEA AL FINAL DEL VECTOR.
-		//QUEDARIA (SIZE | BODY | EXT) | SIZE Y TIENE QUE QUEDAR SIZE | (SIZE | BODY | EXT)
-		//QUIZAS SE PODRIA USAR UN DEQUE, PERO PARA NO CAMBIAR TODO SIMPLEMENTE SE PUEDE
-		//CREAR UN VECTOR NUEVO PONIENDO EL SIZE Y LUEGO EL RESTO
-		pushElement(*secretVector, secretVector->size());
+
+		*secretVector = encriptionStrategy->encript(mode, *secretVector); //we get (SIZE | BODY | EXT) encirpted
+
+		vector<char> * auxVector = new vector<char>();
+		pushElement(*auxVector, secretVector->size()); //we get SIZE|(SIZE|BODY|EXT)
+		for(int i = 0; i < secretVector->size(); i++){
+			auxVector->push_back(secretVector->at(i));
+		}
+		secretVector = auxVector;
 	}
 
 	stenographer.embed(convertToArray(hostFile), *secretVector, outputFile);
@@ -40,19 +41,37 @@ void BMPStenographier::embed(string host, string secret, string output,
 	outputFile.close();
 }
 
-
-// EL EXTRACT NO RECIBE INFORMACION SOBRE EL TIPO DE BLOQUE
 void BMPStenographier::extract(string host, string output,
 		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
 	ifstream& hostFile = *loadFile(host);
 	hostFile.seekg(HEADER_SIZE);
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
+
 	int size;
 	popElement(outputDeque, &size, sizeof(size));
 	//ACA SE TIENE LA PARTE ENCRIPTADA EN OUTPUTDEQUE
-	//HAY QUE DESENCRIPTARLO
-	//SE OBTENDRIA SIZE || BODY || EXT
-	//LEER SIZE DE NUEVO CON POPELEMENT
+	if (encriptionStrategy != NULL) {
+		vector<char> * encriptedVector = new vector<char>();
+		for(int i = 0; i < size; i++){
+			encriptedVector->push_back(outputDeque.front());
+			outputDeque.pop_front();
+		}
+		* encriptedVector = encriptionStrategy->decript(mode, *encriptedVector);
+
+		//SE OBTENDRIA SIZE || BODY || EXT en encriptedVector
+		size = 0;
+		for (size_t i = 0; i < sizeof(int); i++) {
+			char c = encriptedVector->at(i);
+			size <<= 8;
+			size |= (0x0FF & c);
+		}
+		outputDeque.clear();
+		int auxSize = encriptedVector->size() - sizeof(int);
+		for(int i = 0; i < auxSize; i++){
+			outputDeque.push_front(encriptedVector->back());
+			encriptedVector->pop_back();
+		}
+	}
 	//Write file to stream
 	cout << "Recuperando " << size << " bytes" << endl;
 	deque<char>& outputVector = *(new deque<char>());
@@ -60,7 +79,6 @@ void BMPStenographier::extract(string host, string output,
 		outputVector.push_back(outputDeque.front());
 		outputDeque.pop_front();
 	}
-	
 	
 	string ext;
 	//Retrieve file extension
