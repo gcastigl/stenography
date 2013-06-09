@@ -21,7 +21,7 @@ private:
 	vector<char>& prepareVector(vector<char>& secretData, string secret);
 	template <class type>
 	void pushElement(vector<char>& vector, type num);
-	void popElement(deque<char>& vector, int* num, size_t bytes);
+	void popElement(deque<char>& vector, uint* num, size_t bytes);
 };
 
 

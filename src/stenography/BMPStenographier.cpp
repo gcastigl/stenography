@@ -47,12 +47,12 @@ void BMPStenographier::extract(string host, string output,
 	hostFile.seekg(HEADER_SIZE);
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
 
-	int size;
+	uint size;
 	popElement(outputDeque, &size, sizeof(size));
 	//ACA SE TIENE LA PARTE ENCRIPTADA EN OUTPUTDEQUE
 	if (encriptionStrategy != NULL) {
 		vector<char> * encriptedVector = new vector<char>();
-		for(int i = 0; i < size; i++){
+		for(size_t i = 0; i < size; i++){
 			encriptedVector->push_back(outputDeque.front());
 			outputDeque.pop_front();
 		}
@@ -60,14 +60,14 @@ void BMPStenographier::extract(string host, string output,
 
 		//SE OBTENDRIA SIZE || BODY || EXT en encriptedVector
 		size = 0;
-		for (size_t i = 0; i < sizeof(int); i++) {
-			char c = encriptedVector->at(i);
+		for (size_t i = 0; i < sizeof(uint); i++) {
+			unsigned char c = encriptedVector->at(i);
 			size <<= 8;
 			size |= (0x0FF & c);
 		}
 		outputDeque.clear();
-		int auxSize = encriptedVector->size() - sizeof(int);
-		for(int i = 0; i < auxSize; i++){
+		uint auxSize = encriptedVector->size() - sizeof(int);
+		for(size_t i = 0; i < auxSize; i++){
 			outputDeque.push_front(encriptedVector->back());
 			encriptedVector->pop_back();
 		}
@@ -75,7 +75,7 @@ void BMPStenographier::extract(string host, string output,
 	//Write file to stream
 	cout << "Recuperando " << size << " bytes" << endl;
 	deque<char>& outputVector = *(new deque<char>());
-	for (int i = 0; i < size; i++) {
+	for (size_t i = 0; i < size; i++) {
 		outputVector.push_back(outputDeque.front());
 		outputDeque.pop_front();
 	}
@@ -104,7 +104,7 @@ void BMPStenographier::pushElement(vector<char>& vector, type num) {
 	}
 }
 
-void BMPStenographier::popElement(deque<char>& deque, int* num, size_t bytes) {
+void BMPStenographier::popElement(deque<char>& deque, uint* num, size_t bytes) {
 	*num = 0;
 	for (size_t i = 0; i < bytes; i++) {
 		char c = deque.front();

@@ -2,8 +2,10 @@
 
 #include <sg/Parser.h>
 
-using namespace std;
+//AES128 AES192
 
+using namespace std;
+//ECB, CFB, OFB, CBC
 Command* Parser::parseCommand(int argc, char *argv[]) {
 	Command* cmd = new Command;
 	cmd->action = EXTRACT;
@@ -12,10 +14,10 @@ Command* Parser::parseCommand(int argc, char *argv[]) {
 	cmd->encriptionBlock = OFB;
 	cmd->password = "secreto";
 	cmd->inputFile = "./res/secret.txt";
-	cmd->hostFile = "./res/th.bmp";
-	cmd->outputFile = "./res/result";
-	//cmd->hostFile = "./res/testPampero/sherlock4aes256ofb.bmp";
-	//cmd->outputFile = "./res/testPampero/result";
+	//cmd->hostFile = "./res/th.bmp";
+	//cmd->outputFile = "./res/result";
+	cmd->hostFile = "./res/testPampero/sherlock4aes256ofb.bmp";
+	cmd->outputFile = "./res/testPampero/result";
 	return cmd;
 }
 

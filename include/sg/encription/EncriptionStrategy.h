@@ -2,6 +2,7 @@
 #include <vector>
 #include <sg/Parser.h>
 #include <openssl/evp.h>
+#include <openssl/err.h>
 #include <cstring>
 
 using namespace std;
@@ -27,15 +28,20 @@ class EncriptionStrategy  {
 	protected :
 		virtual const EVP_CIPHER * getType(EncriptionBlockType mode) = 0;
 		vector<char>& evp_encrypt(const EVP_CIPHER * type, vector<char>& input) {
-			unsigned char key[TAM_CLAVE];
-			unsigned char iv[TAM_CLAVE];
-			const unsigned char * password = (const unsigned char *)getPassword();
-			EVP_BytesToKey(type, EVP_md5(), NULL, password, strlen((const char *)password),1, key, iv);
 			EVP_CIPHER_CTX ctx;
-			int inl, outl, templ;
-			unsigned char * out = (unsigned char *)malloc((input.size() + 16 ) * sizeof(char));
 
 			EVP_CIPHER_CTX_init(&ctx);
+			int cipherBlockSize = EVP_CIPHER_block_size(type);
+			int cipherKeyLength = EVP_CIPHER_key_length(type);
+			int cipherIvLength  = EVP_CIPHER_iv_length(type);
+
+			unsigned char key[cipherKeyLength];
+			unsigned char iv[cipherIvLength];
+			const unsigned char * password = (const unsigned char *)getPassword();
+			EVP_BytesToKey(type, EVP_md5(), NULL, password, strlen((const char *)password),1, key, iv);
+			int inl, outl, templ;
+			unsigned char * out = (unsigned char *)malloc((input.size() + cipherBlockSize ) * sizeof(char));
+
 			EVP_EncryptInit_ex(&ctx, type, NULL, key, iv);
 			inl = input.size();
 			EVP_EncryptUpdate(&ctx, out, &outl, (unsigned char *)input.data(), inl);
@@ -52,13 +58,16 @@ class EncriptionStrategy  {
 			return *outVector;
 		};
 		vector<char>& evp_decrypt(const EVP_CIPHER * type, vector<char>& input) {
-			unsigned char key[TAM_CLAVE];
-			unsigned char iv[TAM_CLAVE];
+			int cipherBlockSize = EVP_CIPHER_block_size(type);
+			int cipherKeyLength = EVP_CIPHER_key_length(type);
+			int cipherIvLength  = EVP_CIPHER_iv_length(type);
+			unsigned char key[cipherKeyLength];
+			unsigned char iv[cipherIvLength];
 			const unsigned char * password = (const unsigned char *)getPassword();
 			EVP_BytesToKey(type, EVP_md5(), NULL, password, strlen((const char *)password),1, key, iv);
 			EVP_CIPHER_CTX ctx;
 			int inl, outl, templ;
-			unsigned char * out = (unsigned char *)malloc((input.size() + 16 ) * sizeof(char));
+			unsigned char * out = (unsigned char *)malloc((input.size() + cipherBlockSize ) * sizeof(char));
 
 			EVP_CIPHER_CTX_init(&ctx);
 			EVP_DecryptInit_ex(&ctx, type, NULL, key, iv);
