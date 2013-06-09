@@ -17,7 +17,7 @@ public:
 private:
 	static const int HEADER_SIZE = 54;
 	ifstream* loadFile(string path);
-	vector<char>& convertToArray(ifstream& file);
+	vector<char>& convertToArray(ifstream* file);
 	vector<char>& prepareVector(vector<char>& secretData, string secret);
 	template <class type>
 	void pushElement(vector<char>& vector, type num);

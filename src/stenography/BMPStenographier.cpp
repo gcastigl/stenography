@@ -13,10 +13,14 @@ using namespace std;
 
 void BMPStenographier::embed(string host, string secret, string output,
 		Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
-	ifstream& hostFile = *loadFile(host);
-	ifstream& secretFile = *loadFile(secret);
+	ifstream* hostFile = loadFile(host);
+	ifstream* secretFile = loadFile(secret);
+	if (hostFile == NULL || secretFile == NULL) {
+		cout << "No pudo estanografiarse el archivo." << endl;
+		return;
+	}
 	char* headerBuffer = new char[HEADER_SIZE];
-	hostFile.read(headerBuffer, HEADER_SIZE);
+	hostFile->read(headerBuffer, HEADER_SIZE);
 	ofstream& outputFile = *(new ofstream(output, ios::binary));
 	outputFile.write(headerBuffer, HEADER_SIZE);
 	vector<char> secretData = convertToArray(secretFile);
@@ -35,16 +39,19 @@ void BMPStenographier::embed(string host, string secret, string output,
 	cout << "Secret: " << secret << endl;
 	cout << "Output: " << output << endl;
 	stenographer.embed(convertToArray(hostFile), *secretVector, outputFile);
-	hostFile.close();
-	secretFile.close();
+	hostFile->close();
+	secretFile->close();
 	outputFile.close();
 }
 
 void BMPStenographier::extract(string host, string output, Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
-	ifstream& hostFile = *loadFile(host);
-	hostFile.seekg(HEADER_SIZE);
+	ifstream* hostFile = loadFile(host);
+	if (hostFile == NULL) {
+		cout << "No pudo desestanografiarse el archivo." << endl;
+		return;
+	}
+	hostFile->seekg(HEADER_SIZE);
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
-
 	uint size;
 	popElement(outputDeque, &size, sizeof(size));
 	//ACA SE TIENE LA PARTE ENCRIPTADA EN OUTPUTDEQUE
@@ -90,7 +97,7 @@ void BMPStenographier::extract(string host, string output, Stenography& stenogra
 		outputFile << outputVector.front();
 		outputVector.pop_front();
 	}
-	hostFile.close();
+	hostFile->close();
 	outputFile.close();
 }
 
@@ -133,21 +140,21 @@ vector<char>& BMPStenographier::prepareVector(vector<char>& secretData, string s
 
 ifstream* BMPStenographier::loadFile(string path) {
 	ifstream* file = new ifstream(path, ios::in | ios::binary);
-	if (!file) {
-		cerr << "Fallo el leer " << path << endl;
-		throw "Fallo el leer el archivo";
+	if (!file || !file->good()) {
+		cerr << "No se pudo leer " << path << endl;
+		return NULL;
 	}
 	return file;
 }
 
-vector<char>& BMPStenographier::convertToArray(ifstream& file) {
-	size_t start = file.tellg();
-	file.seekg(0, file.end);
-	size_t end = file.tellg();
+vector<char>& BMPStenographier::convertToArray(ifstream* file) {
+	size_t start = file->tellg();
+	file->seekg(0, file->end);
+	size_t end = file->tellg();
 	size_t size = end - start;
-	file.seekg(start);
+	file->seekg(start);
 	char* buffer = new char[size];
-	file.read(buffer, size);
+	file->read(buffer, size);
 	vector<char>* values = new vector<char>();
 	for (size_t i = 0; i < size; i++) {
 		values->push_back(buffer[i]);
