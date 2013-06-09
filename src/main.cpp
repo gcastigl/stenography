@@ -11,14 +11,13 @@ using namespace std;
 int main (int argc, char *argv[]) {
 	printf("Sistema de encriptacion por estenografia v1.0\n");
 	Parser* parser = new Parser();
-	Command& command = *parser->parseCommand(argc, argv);
-	if (command.errorMsg != NULL) {
-		printf("Error: %s", command.errorMsg->c_str());
+	Command* command = parser->parseCommand(argc, argv);
+	if (command == NULL) {
+		printf("Program ended");
 		return 1;
 	}
-	
 	Stenography* stenography;
-	switch (command.stenography) {
+	switch (*command->stenography) {
 		case LSB1:
 			stenography = new LsbStenography(1);
 			break;
@@ -30,29 +29,32 @@ int main (int argc, char *argv[]) {
 			break;
 	}
 	EncriptionStrategy* encription;
-	switch(command.encription){
+	const char * password = command->password.c_str();
+	EncriptionBlockType* encriptionBlock = command->encriptionBlock;
+	EncriptionType selectedEncription = command->encription == NULL ? NONE : *command->encription;
+	switch(selectedEncription) {
 		case AES128:
-			encription = new Aes128EncriptionStrategy(command.password, command.encriptionBlock);
+			encription = new Aes128EncriptionStrategy(password, encriptionBlock);
 			break;
 		case AES192:
-			encription = new Aes192EncriptionStrategy(command.password, command.encriptionBlock);
+			encription = new Aes192EncriptionStrategy(password, encriptionBlock);
 			break;
 		case AES256:
-			encription = new Aes256EncriptionStrategy(command.password, command.encriptionBlock);
+			encription = new Aes256EncriptionStrategy(password, encriptionBlock);
 			break;
 		case DES:
-			encription = new DesEncriptionStrategy(command.password, command.encriptionBlock);
+			encription = new DesEncriptionStrategy(password, encriptionBlock);
 			break;
-		case NONE: default:
+		case NONE:
+		default:
 			encription = NULL;
 	}
 
 	BMPStenographier stenographer;
-	//Steanography execution
-	if (command.action == EMBED) {
-		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, encription);
+	if (*command->action == EMBED) {
+		stenographer.embed(command->hostFile, command->inputFile, command->outputFile, *stenography, encription);
 	} else {
-		stenographer.extract(command.hostFile, command.outputFile, *stenography, encription);
+		stenographer.extract(command->hostFile, command->outputFile, *stenography, encription);
 	}
 	
 	cout << "Program succesfully finished" << endl;

@@ -80,7 +80,8 @@ int main(){
 */
 
 int main_() {
-	EncriptionStrategy* e = new Aes256EncriptionStrategy((const char *) "secreto", CBC);
+	EncriptionBlockType encriptionBlock = CBC;
+	EncriptionStrategy* e = new Aes256EncriptionStrategy((const char *) "secreto", &encriptionBlock);
 	ifstream& secretFile = *loadFile("./res/testPampero/secret.txt");
 	vector<char> secretData = convertToArray(secretFile);
 	 vector<char> out, decripted;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -21,26 +22,20 @@ typedef enum {
 } EncriptionBlockType;
 
 typedef struct Command {
-	ActionType action;
-	StenographyType stenography;
-	EncriptionType encription;
-	EncriptionBlockType encriptionBlock;
-	string* errorMsg;
-	const char * password;
+	ActionType* action;
+	StenographyType* stenography;
+	EncriptionType* encription;
+	EncriptionBlockType* encriptionBlock;
 
-	// Archivo a esconder (solo para embed action)
-	// deque<char>* inputFileDeque;
-	string inputFile;
-
-	// Archivo de salida
-	string outputFile;
-
-	// Archivo portador de la imagen
-	// deque<char>* hostFileDeque;
-	string hostFile;
+	string password;	// Password a utilizar para el algoritmo de encriptacion
+	string inputFile;	// Archivo a esconder (solo para embed action)
+	string outputFile;	// Archivo de salida
+	string hostFile;	// Archivo portador de la imagen
 } Command;
 
 class Parser {
 	public:
 		Command* parseCommand(int argc, char *argv[]);
+	private:
+		void printUsage();
 };

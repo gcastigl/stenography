@@ -19,8 +19,9 @@ class ICrypto
 */
 class EncriptionStrategy {
 	public:
-		EncriptionStrategy(const char * password, EncriptionBlockType mode) :
-			password(password), mode(mode) {
+		EncriptionStrategy(const char * password, EncriptionBlockType* mode) :
+			password(password),
+			mode((mode == NULL) ? CBC : *mode) {
 		};
 		virtual ~EncriptionStrategy() {};
 		virtual vector<char>& encript(vector<char>& input) = 0;
@@ -96,7 +97,7 @@ class EncriptionStrategy {
 
 class Aes128EncriptionStrategy : public EncriptionStrategy {
 	public:
-		Aes128EncriptionStrategy(const char * password, EncriptionBlockType mode) : EncriptionStrategy(password, mode) {};
+		Aes128EncriptionStrategy(const char * password, EncriptionBlockType* mode) : EncriptionStrategy(password, mode) {};
 		~Aes128EncriptionStrategy() {};
 		const EVP_CIPHER * getType(EncriptionBlockType mode);
 		vector<char>& encript(vector<char>& input);
@@ -106,7 +107,7 @@ class Aes128EncriptionStrategy : public EncriptionStrategy {
 
 class Aes192EncriptionStrategy : public EncriptionStrategy {
 public:
-	Aes192EncriptionStrategy(const char * password, EncriptionBlockType mode) : EncriptionStrategy(password, mode) {};
+	Aes192EncriptionStrategy(const char * password, EncriptionBlockType* mode) : EncriptionStrategy(password, mode) {};
 	~Aes192EncriptionStrategy() {};
 	const EVP_CIPHER * getType(EncriptionBlockType mode);
 	vector<char>& encript(vector<char>& input);
@@ -115,7 +116,7 @@ public:
 
 class Aes256EncriptionStrategy : public EncriptionStrategy {
 public:
-	Aes256EncriptionStrategy(const char * password, EncriptionBlockType mode) : EncriptionStrategy(password, mode) {};
+	Aes256EncriptionStrategy(const char * password, EncriptionBlockType* mode) : EncriptionStrategy(password, mode) {};
 	~Aes256EncriptionStrategy() {};
 	const EVP_CIPHER * getType(EncriptionBlockType mode);
 	vector<char>& encript(vector<char>& input);
@@ -124,7 +125,7 @@ public:
 
 class DesEncriptionStrategy : public EncriptionStrategy {
 public:
-	DesEncriptionStrategy(const char * password, EncriptionBlockType mode) : EncriptionStrategy(password, mode) {};
+	DesEncriptionStrategy(const char * password, EncriptionBlockType* mode) : EncriptionStrategy(password, mode) {};
 	~DesEncriptionStrategy() {};
 	const EVP_CIPHER * getType(EncriptionBlockType mode);
 	vector<char>& encript(vector<char>& input);
