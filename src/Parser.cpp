@@ -2,7 +2,9 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
+#include <string>
 #include <iostream>
 
 template <typename T>
@@ -11,12 +13,10 @@ class EnumParser {
 public:
     EnumParser(){};
     T ParseEnum(const string &value) {
-        /*map<string, T>::const_iterator mapEntry = enumMap.find(value);
-        if (mapEntry  == enumMap.end()) {
-            throw runtime_error("");
-        }
-        return mapEntry->second;*/
-    	return enumMap.find(value)->second;
+    	if (enumMap.find(value) != enumMap.end()) {
+    		return enumMap.find(value)->second;
+    	}
+    	throw value;
     }
 };
 
@@ -47,6 +47,14 @@ EnumParser<EncriptionBlockType>::EnumParser() {
 
 using namespace std;
 
+string stringToUpper(string s) {
+	std::string ret(s.size(), char());
+	for(unsigned int i = 0; i < s.size(); ++i) {
+		ret[i] = (s[i] <= 'z' && s[i] >= 'a') ? s[i]-('a'-'A') : s[i];
+	}
+	return ret;
+}
+
 Command* Parser::parseCommand(int argc, char *argv[]) {
 	if (argc <= 1) {
 		printUsage();
@@ -76,13 +84,26 @@ Command* Parser::parseCommand(int argc, char *argv[]) {
 			cmd->outputFile = string(argv[i]);
 		} else if (strcmp("-steg", param) == 0) {
 			i++;
-			cmd->stenography = new StenographyType(stenoraphyParser.ParseEnum(string(argv[i])));
+			try {
+				cmd->stenography = new StenographyType(stenoraphyParser.ParseEnum(stringToUpper(string(argv[i]))));
+			} catch (string& err) {
+				cout << "valor invalido " << param << " " << argv[i] << endl;
+			}
 		} else if (strcmp("-a", param) == 0) {
 			i++;
-			cmd->encription = new EncriptionType(encriptionParser.ParseEnum(string(argv[i])));
+			try {
+				string toupper = string(argv[i]);
+				cmd->encription = new EncriptionType(encriptionParser.ParseEnum(stringToUpper(string(argv[i]))));
+			} catch (string& err) {
+				cout << "valor invalido " << param << " " << argv[i] << endl;
+			}
 		} else if (strcmp("-m", param) == 0) {
 			i++;
-			cmd->encriptionBlock = new EncriptionBlockType(encriptionBlockParser.ParseEnum(string(argv[i])));
+			try {
+				cmd->encriptionBlock = new EncriptionBlockType(encriptionBlockParser.ParseEnum(stringToUpper(string(argv[i]))));
+			} catch (string& err) {
+				cout << "valor invalido " << param << " " << argv[i] << endl;
+			}
 		} else if (strcmp("-pass", param) == 0) {
 			i++;
 			cmd->password = string(argv[i]);
