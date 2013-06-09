@@ -119,13 +119,17 @@ Command* Parser::parseCommand(int argc, char *argv[]) {
 			printf("Faltan parametros obligatorios. Invoque el programa con -help para ver parametros\n");
 			return NULL;
 		}
-		if (cmd->stenography != NULL && cmd->password.empty()) {
+		if ((cmd->encription != NULL || cmd->encriptionBlock != NULL) && cmd->password.empty()) {
 			printf("La contraseña es obligatoria si se desea encriptar\n");
 			return NULL;
 		}
 	} else if (*cmd->action == EXTRACT) {
 		if (cmd->hostFile.empty() || cmd->outputFile.empty() || !cmd->stenography) {
 			printf("Faltan parametros obligatorios. Invoque el programa con -help para ver parametros\n");
+			return NULL;
+		}
+		if ((cmd->encription != NULL || cmd->encriptionBlock != NULL) && cmd->password.empty()) {
+			printf("La contraseña es obligatoria si se desea desencriptar\n");
 			return NULL;
 		}
 	}
