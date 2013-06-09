@@ -8,7 +8,7 @@
 
 using namespace std;
 
-char * evaluate(vector<char>& in, vector<char>& decripted);
+const char * evaluate(vector<char>& in, vector<char>& decripted);
 
 ifstream* loadFile(string path) {
 	ifstream* file = new ifstream(path, ios::in | ios::binary);
@@ -79,8 +79,7 @@ int main(){
 }
 */
 
-int
-main_() {
+int main_() {
 	ICrypto* e = new Aes256EncriptionStrategy((const char *)"secreto");
 	ifstream& secretFile = *loadFile("./res/testPampero/secret.txt");
 	vector<char> secretData = convertToArray(secretFile);
@@ -88,7 +87,7 @@ main_() {
 	out = e->encript(CBC, secretData);
 
 	ofstream& auxFile = *(new ofstream("./res/testPampero/encrypted", ios::binary));
-	for(int i = 0; i < out.size(); i++){
+	for(size_t i = 0; i < out.size(); i++){
 	    			auxFile << out.at(i);
 	    		}
 	    		auxFile.close();
@@ -96,6 +95,7 @@ main_() {
 	decripted = e->decript(CBC, out);
 	printf("%s\n",evaluate(secretData, decripted));
 	secretFile.close();
+	return 0;
 }
 /*
 int main() {
@@ -187,11 +187,11 @@ int main() {
   printf("%s\n",evaluate(*in, decripted));
 }*/
 
-char * evaluate(vector<char>& in, vector<char>& decripted){
+const char * evaluate(vector<char>& in, vector<char>& decripted){
 	if(in.size() != decripted.size()){
 		return "ERROR";
 	}
-	for(int i= 0; i < in.size(); i++){
+	for(size_t i= 0; i < in.size(); i++){
 		if( in.at(i) != decripted.at(i) ){
 			return "ERROR";
 		}
