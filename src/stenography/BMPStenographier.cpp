@@ -54,6 +54,13 @@ void BMPStenographier::extract(string host, string output, Stenography& stenogra
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
 	uint size;
 	popElement(outputDeque, &size, sizeof(size));
+
+	int realSize = (int) hostFile->tellg();
+
+	if(size >= realSize){
+		cout << "Fallo en la extracción. Verifique el modo de ocultamiento utilizado." << endl;
+		exit(1);
+	}
 	//ACA SE TIENE LA PARTE ENCRIPTADA EN OUTPUTDEQUE
 	if (encriptionStrategy != NULL) {
 		vector<char> * encriptedVector = new vector<char>();
@@ -64,12 +71,18 @@ void BMPStenographier::extract(string host, string output, Stenography& stenogra
 		* encriptedVector = encriptionStrategy->decript(*encriptedVector);
 
 		//SE OBTENDRIA SIZE || BODY || EXT en encriptedVector
-		size = 0;
+		uint sizeEncirpted = 0;
 		for (size_t i = 0; i < sizeof(uint); i++) {
 			unsigned char c = encriptedVector->at(i);
-			size <<= 8;
-			size |= (0x0FF & c);
+			sizeEncirpted <<= 8;
+			sizeEncirpted |= (0x0FF & c);
 		}
+
+		if(sizeEncirpted > size){
+			cout << "Fallo en la extracción. Verifique el modo de cifrado utilizado." << endl;
+			exit(1);
+		}
+		size = sizeEncirpted;
 		outputDeque.clear();
 		uint auxSize = encriptedVector->size() - sizeof(int);
 		for(size_t i = 0; i < auxSize; i++){
