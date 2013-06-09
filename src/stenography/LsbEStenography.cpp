@@ -6,7 +6,11 @@
 
 using namespace std;
 
-bool LsbEStenography::embedable(vector<char>& host, vector<char>& secret) {
+size_t LsbEStenography::secretSize(vector<char>& secret) {
+	return secret.size() * 8;
+}
+
+size_t LsbEStenography::hostCapacity(vector<char>& host) {
 	size_t embeddableBytes = 0;
 	for (size_t i = 0; i < host.size(); i++) {
 		char c = host.at(i);
@@ -14,7 +18,7 @@ bool LsbEStenography::embedable(vector<char>& host, vector<char>& secret) {
 			embeddableBytes++;
 		}
 	}
-	return secret.size() * 8 <= embeddableBytes;
+	return embeddableBytes;
 }
 
 void LsbEStenography::embed(char hide, vector<char>& hostArray, size_t& index) {

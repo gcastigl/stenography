@@ -9,8 +9,12 @@ LsbStenography::LsbStenography(int bits) :
 	bits(bits) {
 }
 
-bool LsbStenography::embedable(vector<char>& host, vector<char>& secret) {
-	return secret.size() * 8 / bits <= host.size();
+size_t LsbStenography::secretSize(vector<char>& secret) {
+	return secret.size() * 8 / bits;
+}
+
+size_t LsbStenography::hostCapacity(vector<char>& host) {
+	return host.size();
 }
 
 void LsbStenography::embed(char hide, vector<char>& hostArray, size_t& index) {

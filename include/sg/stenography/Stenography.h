@@ -9,10 +9,12 @@ using namespace std;
 class Stenography {
 	public:
 		virtual ~Stenography() {};
-		void embed(vector<char>& host, vector<char>& secret, ofstream& outfile);
-		virtual deque<char>& extract(vector<char>& host) =0;
+		bool embed(vector<char>& host, vector<char>& secret, ofstream& outfile);
+		virtual deque<char>& extract(vector<char>& host) = 0;
 	protected:
-		virtual bool embedable(vector<char>& host, vector<char>& secret) = 0;
+		bool embedable(vector<char>& host, vector<char>& secret);
+		virtual size_t hostCapacity(vector<char>& host) = 0;
+		virtual size_t secretSize(vector<char>& secret) = 0;
 		virtual void embed(char hide, vector<char>& hostArray, size_t& index) = 0;
 		char embedByte(char hide, char embedTo, int bit, int bitsToEmbed);
 	private:
@@ -25,7 +27,8 @@ class LsbStenography : public Stenography {
 		~LsbStenography() {};
 		deque<char>& extract(vector<char>& host);
 	protected:
-		bool embedable(vector<char>& host, vector<char>& secret);
+		size_t hostCapacity(vector<char>& host);
+		size_t secretSize(vector<char>& secret);
 		void embed(char hide, vector<char>& hostArray, size_t& index);
 	private:
 		int bits;
@@ -37,7 +40,8 @@ class LsbEStenography : public Stenography {
 		~LsbEStenography() {};
 		deque<char>& extract(vector<char>& host);
 	protected:
-		bool embedable(vector<char>& host, vector<char>& secret);
+		size_t hostCapacity(vector<char>& host);
+		size_t secretSize(vector<char>& secret);
 		void embed(char hide, vector<char>& hostArray, size_t& index);
 	private:
 		static const char c1 = 0x0FE;

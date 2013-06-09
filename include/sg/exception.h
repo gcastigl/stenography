@@ -1,12 +1,12 @@
-#pragma once;
+#pragma once
 
 #include <exception>
-/*
-class IllegalArgumentException : public std::exception {
+
+class StegnographySizeException: public std::exception {
 private:
-	std::string message;
+	long maxSize;
 public:
-	IllegalArgumentException(std::string error) : message(error) {};
-	const char* what() const noexcept { return message.c_str(); }
+	StegnographySizeException(long maxSize) :
+			maxSize(maxSize) {
+	}
 };
-*/

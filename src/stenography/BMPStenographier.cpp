@@ -20,13 +20,10 @@ void BMPStenographier::embed(string host, string secret, string output,
 	ofstream& outputFile = *(new ofstream(output, ios::binary));
 	outputFile.write(headerBuffer, HEADER_SIZE);
 	vector<char> secretData = convertToArray(secretFile);
-	
 	vector<char>* secretVector = &prepareVector(secretData, secret);
 
 	if (encriptionStrategy != NULL) {
-
 		*secretVector = encriptionStrategy->encript(*secretVector); //we get (SIZE | BODY | EXT) encirpted
-
 		vector<char> * auxVector = new vector<char>();
 		pushElement(*auxVector, secretVector->size()); //we get SIZE|(SIZE|BODY|EXT)
 		for(size_t i = 0; i < secretVector->size(); i++){
@@ -34,7 +31,9 @@ void BMPStenographier::embed(string host, string secret, string output,
 		}
 		secretVector = auxVector;
 	}
-
+	cout << "Host: " << host << endl;
+	cout << "Secret: " << secret << endl;
+	cout << "Output: " << output << endl;
 	stenographer.embed(convertToArray(hostFile), *secretVector, outputFile);
 	hostFile.close();
 	secretFile.close();

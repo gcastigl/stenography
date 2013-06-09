@@ -9,11 +9,11 @@
 using namespace std;
 
 int main (int argc, char *argv[]) {
-	printf("Sistema de encriptacion por estenografia v1.0\n");
+	cout << argv[0] << endl;
 	Parser* parser = new Parser();
 	Command* command = parser->parseCommand(argc, argv);
 	if (command == NULL) {
-		printf("Program ended");
+		cout << "Comando invalido. Ningun cambio fue relizado" << endl;
 		return 1;
 	}
 	Stenography* stenography;
@@ -49,15 +49,13 @@ int main (int argc, char *argv[]) {
 		default:
 			encription = NULL;
 	}
-
 	BMPStenographier stenographer;
 	if (*command->action == EMBED) {
 		stenographer.embed(command->hostFile, command->inputFile, command->outputFile, *stenography, encription);
 	} else {
 		stenographer.extract(command->hostFile, command->outputFile, *stenography, encription);
 	}
-	
-	cout << "Program succesfully finished" << endl;
+	cout << "Programa finalizado correctamente" << endl;
 	return 0;
 }
 
