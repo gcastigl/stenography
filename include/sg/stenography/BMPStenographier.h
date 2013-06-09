@@ -12,8 +12,8 @@ using namespace std;
 
 class BMPStenographier {
 public:
-	void embed(string hostFile, string secretFile, string outputFile, Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode);
-	void extract(string hostFile, string outputFile, Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode);
+	void embed(string hostFile, string secretFile, string outputFile, Stenography& stenographer, EncriptionStrategy* encriptionStrategy);
+	void extract(string hostFile, string outputFile, Stenography& stenographer, EncriptionStrategy* encriptionStrategy);
 private:
 	static const int HEADER_SIZE = 54;
 	ifstream* loadFile(string path);

@@ -18,12 +18,12 @@ const EVP_CIPHER * Aes192EncriptionStrategy::getType(EncriptionBlockType mode){
 	return type;
 }
 
-vector<char>& Aes192EncriptionStrategy::encript(EncriptionBlockType mode, vector<char>& input) {
+vector<char>& Aes192EncriptionStrategy::encript(vector<char>& input) {
 	const EVP_CIPHER * type = getType(mode);
 	return evp_encrypt(type, input);
 }
 
-vector<char>& Aes192EncriptionStrategy::decript(EncriptionBlockType mode, vector<char>& input) {
+vector<char>& Aes192EncriptionStrategy::decript(vector<char>& input) {
 	const EVP_CIPHER * type = getType(mode);
 	return evp_decrypt(type, input);
 }

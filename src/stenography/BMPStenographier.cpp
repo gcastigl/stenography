@@ -12,7 +12,7 @@
 using namespace std;
 
 void BMPStenographier::embed(string host, string secret, string output,
-		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
+		Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
 	ifstream& hostFile = *loadFile(host);
 	ifstream& secretFile = *loadFile(secret);
 	char* headerBuffer = new char[HEADER_SIZE];
@@ -25,11 +25,11 @@ void BMPStenographier::embed(string host, string secret, string output,
 
 	if (encriptionStrategy != NULL) {
 
-		*secretVector = encriptionStrategy->encript(mode, *secretVector); //we get (SIZE | BODY | EXT) encirpted
+		*secretVector = encriptionStrategy->encript(*secretVector); //we get (SIZE | BODY | EXT) encirpted
 
 		vector<char> * auxVector = new vector<char>();
 		pushElement(*auxVector, secretVector->size()); //we get SIZE|(SIZE|BODY|EXT)
-		for(int i = 0; i < secretVector->size(); i++){
+		for(size_t i = 0; i < secretVector->size(); i++){
 			auxVector->push_back(secretVector->at(i));
 		}
 		secretVector = auxVector;
@@ -41,8 +41,7 @@ void BMPStenographier::embed(string host, string secret, string output,
 	outputFile.close();
 }
 
-void BMPStenographier::extract(string host, string output,
-		Stenography& stenographer, ICrypto* encriptionStrategy, EncriptionBlockType mode) {
+void BMPStenographier::extract(string host, string output, Stenography& stenographer, EncriptionStrategy* encriptionStrategy) {
 	ifstream& hostFile = *loadFile(host);
 	hostFile.seekg(HEADER_SIZE);
 	deque<char>& outputDeque = stenographer.extract(convertToArray(hostFile));
@@ -56,7 +55,7 @@ void BMPStenographier::extract(string host, string output,
 			encriptedVector->push_back(outputDeque.front());
 			outputDeque.pop_front();
 		}
-		* encriptedVector = encriptionStrategy->decript(mode, *encriptedVector);
+		* encriptedVector = encriptionStrategy->decript(*encriptedVector);
 
 		//SE OBTENDRIA SIZE || BODY || EXT en encriptedVector
 		size = 0;
@@ -114,8 +113,7 @@ void BMPStenographier::popElement(deque<char>& deque, uint* num, size_t bytes) {
 	}
 }
 
-vector<char>& BMPStenographier::prepareVector(vector<char>& secretData,
-		string secret) {
+vector<char>& BMPStenographier::prepareVector(vector<char>& secretData, string secret) {
 	int size = secretData.size();
 	vector<char>& secretVector = *(new vector<char>());
 	//Pusheo el tamano del archivo

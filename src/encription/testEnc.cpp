@@ -80,11 +80,11 @@ int main(){
 */
 
 int main_() {
-	ICrypto* e = new Aes256EncriptionStrategy((const char *)"secreto");
+	EncriptionStrategy* e = new Aes256EncriptionStrategy((const char *) "secreto", CBC);
 	ifstream& secretFile = *loadFile("./res/testPampero/secret.txt");
 	vector<char> secretData = convertToArray(secretFile);
 	 vector<char> out, decripted;
-	out = e->encript(CBC, secretData);
+	out = e->encript(secretData);
 
 	ofstream& auxFile = *(new ofstream("./res/testPampero/encrypted", ios::binary));
 	for(size_t i = 0; i < out.size(); i++){
@@ -92,7 +92,7 @@ int main_() {
 	    		}
 	    		auxFile.close();
 
-	decripted = e->decript(CBC, out);
+	decripted = e->decript(out);
 	printf("%s\n",evaluate(secretData, decripted));
 	secretFile.close();
 	return 0;

@@ -29,30 +29,30 @@ int main (int argc, char *argv[]) {
 			stenography = new LsbEStenography();
 			break;
 	}
-	ICrypto* encription;
+	EncriptionStrategy* encription;
 	switch(command.encription){
 		case AES128:
-			encription = new Aes128EncriptionStrategy(command.password);
+			encription = new Aes128EncriptionStrategy(command.password, command.encriptionBlock);
 			break;
 		case AES192:
-			encription = new Aes192EncriptionStrategy(command.password);
+			encription = new Aes192EncriptionStrategy(command.password, command.encriptionBlock);
 			break;
 		case AES256:
-			encription = new Aes256EncriptionStrategy(command.password);
+			encription = new Aes256EncriptionStrategy(command.password, command.encriptionBlock);
 			break;
 		case DES:
-			encription = new DesEncriptionStrategy(command.password);
+			encription = new DesEncriptionStrategy(command.password, command.encriptionBlock);
 			break;
-		case NONE: otherwise:
+		case NONE: default:
 			encription = NULL;
 	}
 
 	BMPStenographier stenographer;
 	//Steanography execution
 	if (command.action == EMBED) {
-		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, encription, command.encriptionBlock);
+		stenographer.embed(command.hostFile, command.inputFile, command.outputFile, *stenography, encription);
 	} else {
-		stenographer.extract(command.hostFile, command.outputFile, *stenography, encription, command.encriptionBlock);
+		stenographer.extract(command.hostFile, command.outputFile, *stenography, encription);
 	}
 	
 	cout << "Program succesfully finished" << endl;
